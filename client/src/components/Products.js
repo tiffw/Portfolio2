@@ -2,12 +2,9 @@ import React, { Component } from 'react';
 import Modal from './Modal';
 import {Modals} from './Modals';
 import {ShareButtons, ShareCounts, generateShareIcon} from 'react-share';
-
 import './Products.css';
 
-
 class Products extends Component {
-	
 	constructor(props){
 		super(props);
 		this.state = {
@@ -19,21 +16,52 @@ class Products extends Component {
 	}
 
 	componentWillMount(){
-		var temp = [
-			{
-				name : "Iphone 8", 
-				company : "Apple", 
-				category : "Technology", 
-				image : "https://cdn.macrumors.com/article-new/2017/09/iphone-7-plus-vs-iphone-8-plus-duo.jpg"
-			},
-			{
-				name : "Kitten Mittens", 
-				company : "Paddy's Pub", 
-				category : "Pet", 
-				image : "http://cdn.snowboarding.transworld.net/blogs.dir/442/files/2011/02/sunnye.jpg"
-			}
-		]
-		this.setState({productList : temp });
+		let productList =  this.fetchProducts();
+		// var temp = [
+		// 	{
+		// 		name : "Iphone 8", 
+		// 		company : "Apple", 
+		// 		category : "Technology", 
+		// 		image : "https://cdn.macrumors.com/article-new/2017/09/iphone-7-plus-vs-iphone-8-plus-duo.jpg"
+		// 	},
+		// 	{
+		// 		name : "Kitten Mittens", 
+		// 		company : "Paddy's Pub", 
+		// 		category : "Pet", 
+		// 		image : "http://cdn.snowboarding.transworld.net/blogs.dir/442/files/2011/02/sunnye.jpg"
+		// 	}
+		// ]
+	}
+
+	fetchProducts = () => {
+		fetch(`http://localhost:3001/api/products`, {
+			accept: 'application/json',
+		})
+		.then(response => 
+			response.json().then(data => ({
+				data : data,
+				status : response.status
+			})
+		)
+		.then( res => {
+			this.setState({ productList : res.data});
+		})
+		)
+	}
+	parseJSON = (response) => {
+		let res = response.json();
+	}
+	checkStatus = (response) => {
+		if (response.status >= 200 && response.status < 300) {
+			console.log("fetch success");
+		  	return response;
+		} else {
+		  const error = new Error(`HTTP Error ${response.statusText}`);
+		  error.status = response.statusText;
+		  error.response = response;
+		  console.log(error); // eslint-disable-line no-console
+		  throw error;
+		}
 	}
 
 	hideLazyModal = () => {
@@ -51,7 +79,6 @@ class Products extends Component {
 	showModal = () => {
 		this.setState({showModal: true});
 	};
-
 	  
 	render() {
 		const {showModal, showLazyModal} = this.state;
@@ -70,8 +97,7 @@ class Products extends Component {
 									Get 10 Friends Share Your Link & You ALL Win the New iPhone X
 								</div>
 								<button className="btnContainer" onClick={this.showModal}>Enter</button>	
-							</div>
-							
+							</div>							
 						</div>
 					)
 				}
