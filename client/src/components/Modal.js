@@ -34,7 +34,6 @@ class Modal extends Component {
 
     return (
       <div className="app">
-        <h1>Testing Modal</h1>
 
         <button onClick={this.showModal}>
           Open Modal

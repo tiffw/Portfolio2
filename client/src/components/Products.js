@@ -3,6 +3,7 @@ import Modal from './Modal';
 import {Modals} from './Modals';
 import {ShareButtons, ShareCounts, generateShareIcon} from 'react-share';
 import './Products.css';
+import md5 from "md5";
 
 class Products extends Component {
 	constructor(props){
@@ -94,26 +95,37 @@ class Products extends Component {
 							</div>
 							<div>
 								<div className= "product_title">
-									Get 10 Friends Share Your Link & You ALL Win the New iPhone X
+									Get 10 Friends to Share Your Link & You ALL Win {product.company.name}
 								</div>
-								<button className="btnContainer" onClick={this.showModal}>Enter</button>	
-							</div>							
+
+								<input type='email' ref='enteremail'className="email" placeholder='Add Your Email' required/>
+							      <div>
+							        <button type="submit" onClick={this.showModal} className="loginbutton">Enter</button>
+							      </div>
+
+							</div>
+							
 						</div>
 					)
 				}
-				<Modal />
+
+
+				 <Modal />
 				{
 					showModal ?
 					<Modals onClose={this.hideModal}>
-						Share on Social 
-							<a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-size="large" data-text="Hey! Check the link below to win cool products!! " data-via="dash" data-show-count="false">Tweet</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-					</Modals> : null}
+						Share Your Code 
+						<div>
+							<a href={'https://twitter.com/intent/tweet/?text=Share%20my%20code%20and%20we%20can%20win%20$15%20to%20Starbucks%20&' + 'url=https://www.google.com/' + md5(289102843092813)}  className="twitter-share-button" data-size="large" data-via="dash">Tweet</a>
+    					</div>
+          </Modals> : null}
 
 					{showLazyModal ?
 					<Modals onClose={this.hideLazyModal} notifyOnTouchEnd>
 						Lazy Modal content
 					</Modals> : null
-				}
+				} 
+
 			</div>
 		)
 	}
